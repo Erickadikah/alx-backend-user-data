@@ -40,7 +40,7 @@ def get_logger() -> logging.Logger:
     logger = logger.getLogger('user_data')
     logger.setLevel(logging.INFO)
 
-    handler = logging.streamHandler()
+    handler = logging.StreamHandler()
     formatter = RedactingFormatter(list(PII_FIELDS))
     handler.setFormatter(formatter)
 
