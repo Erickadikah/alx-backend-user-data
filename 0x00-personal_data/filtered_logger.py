@@ -4,6 +4,8 @@
 import re
 import logging
 from typing import List
+import os
+import mysql.connector
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -53,8 +55,25 @@ def get_db():
     """This function returns a connection
         to The database
         Args: None
+        Obtain MySQL credentials from environment variables
     """
-    pass
+    # mysdb = mysql.connector.connect(
+    #     PERSONAL_DATA_DB_HOST = 'localhost',
+    #     PERSONAL_DATA_DB_USERNAME = 'root',
+    #     PERSONAL_DATA_DB_PASSWORD = '',
+    #     db = 'PERSONAL_DATA_DB_NAME'
+    # )
+    db_host = os.environ.get('localhost')
+    db_user = os.environ.get('root')
+    db_password = os.environ.get('')
+
+    conn = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database='PERSONAL_DATA_DB_USERNAME'
+    )
+    cursor = conn.cursor()
 
 
 def filter_datum(fields: List[str], redaction: str,
