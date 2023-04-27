@@ -51,18 +51,19 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db():
+def get_db()-> mysql.connector.connection.MySQLConnection:
     """This function returns a connection
         to The database
         Args: None
         Obtain MySQL credentials from environment variables
+    mysdb = mysql.connector.connect(
+        PERSONAL_DATA_DB_HOST = 'localhost',
+        PERSONAL_DATA_DB_USERNAME = 'root',
+        PERSONAL_DATA_DB_PASSWORD = '',
+        db = 'PERSONAL_DATA_DB_NAME'
+    )
+    Return: -> mysql.connector.connection.MySQLConnection
     """
-    # mysdb = mysql.connector.connect(
-    #     PERSONAL_DATA_DB_HOST = 'localhost',
-    #     PERSONAL_DATA_DB_USERNAME = 'root',
-    #     PERSONAL_DATA_DB_PASSWORD = '',
-    #     db = 'PERSONAL_DATA_DB_NAME'
-    # )
     mydb_connection = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
