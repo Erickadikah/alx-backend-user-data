@@ -6,26 +6,6 @@ import re
 from typing import List
 
 
-class RedactingFormatter(logging.Formatter):
-    """ Redacting Formatter class
-        """
-
-    REDACTION = "***"
-    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
-    SEPARATOR = ";"
-
-    def __init__(self, fields):
-        """Constructor
-        """
-        super(RedactingFormatter, self).__init__(self.FORMAT)
-        self.fields = fields
-
-    def format(self, record: logging.LogRecord) -> str:
-        """to be filled
-        """
-        pass
-
-
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """
@@ -35,22 +15,5 @@ def filter_datum(fields: List[str], redaction: str,
     separator: a string representing by which character
     is separating all fields in the log line (message)
     """
-    # define regex pattern to match field name and value
-    pattern = r"([^=;]+)=([^;]+)"
-
-    # split message into individual fields using the separator
-    log_fields = re.findall(pattern, message)
-
-    # obfuscate the specified fields
-    for i, (field_name, field_value) in enumerate(log_fields):
-        if field_name in fields:
-            log_fields[i] = (field_name, redaction)
-        elif re.match(r'\d{2}/\d{2}/\d{4}', field_value):
-            log_fields[i] = (field_name, redaction)
-
-    # join the obfuscated fields back into a log message using separator
-    obfuscated_fields = ["{}={}".format(k, v) for k, v in log_fields]
-    obfuscated_message = separator.join(obfuscated_fields)
-
-    # return the obfuscated log message
-    return obfuscated_message
+    return re.sub('|'.join(f'(?<={field}=).*?(?={separator})'
+                           for field in fields), redaction, message)
