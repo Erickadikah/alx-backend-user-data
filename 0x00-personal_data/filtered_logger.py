@@ -63,17 +63,13 @@ def get_db():
     #     PERSONAL_DATA_DB_PASSWORD = '',
     #     db = 'PERSONAL_DATA_DB_NAME'
     # )
-    db_host = os.environ.get('localhost')
-    db_user = os.environ.get('root')
-    db_password = os.environ.get('')
+    mydb_connection = mysql.connector.connect(
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME'))
+    return mydb_connection
 
-    conn = mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        password=db_password,
-        database='PERSONAL_DATA_DB_USERNAME'
-    )
-    cursor = conn.cursor()
 
 
 def filter_datum(fields: List[str], redaction: str,
