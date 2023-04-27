@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """filter_datum that returns the log message obfuscated
 """
-import logging
 import re
+import logging
 from typing import List
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
