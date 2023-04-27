@@ -36,7 +36,7 @@ class RedactingFormatter(logging.Formatter):
 def get_logger() -> logging.Logger:
     """this function returns a logging.Logger
     """
-    logger = logger.getLogger('user_data')
+    logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
     logger.propergate = False
 
@@ -47,6 +47,14 @@ def get_logger() -> logging.Logger:
     logger.addHandler(handler)
 
     return logger
+
+
+def get_db():
+    """This function returns a connection
+        to The database
+        Args: None
+    """
+    pass
 
 
 def filter_datum(fields: List[str], redaction: str,
