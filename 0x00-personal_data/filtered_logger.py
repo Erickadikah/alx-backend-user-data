@@ -67,17 +67,39 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME'))
+        database=os.getenv('PERSONAL_DATA_DB_NAME')
+    )
     return mydb_connection
 
 
-def main():
+def main() -> None:
     """Reading and filtering data
         Args: None
+        Function: Obtains database connection using get_db
+        Retieves all row in the users Table
+        Returns each row
+        logger: logging.Logger = get_logger()
+        get a logger object and assigns it to a variable logger
     """
-    get_db (
-
-    )
+    logger: logging.logger = get_logger()
+    connection = get_db()
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM users;')
+    fields = ['name', 'email', 'phone', 'ssn',
+              'password', 'ip', 'last_login', 'user_agent']
+    filtered_fields = ['name', 'email', 'phone', 'ssn', 'password']
+    results = cursor.fetchall()
+    for row in results:
+        data = dict(zip(fields, row))
+        filtered_data = {key: '***' if key in filtered_fields else values
+                         for key, values in data.items()}
+        credentials = "name={name}; email={email};\
+        phone={phone}; ssn={ssn}; password={password};\
+              ip={ip}; last_login={last_login}; user_agent={user_agent};"
+        logger.info(credentials.format(**filtered_data))
+        logger.info('Filtered fields: %s', ', '.join(filtered_fields))
+    cursor.close()
+    connection.close()
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -92,3 +114,7 @@ def filter_datum(fields: List[str], redaction: str,
     """
     return re.sub('|'.join(f'(?<={field}=).*?(?={separator})'
                            for field in fields), redaction, message)
+
+
+if __name__ == '__main__':
+    main()
