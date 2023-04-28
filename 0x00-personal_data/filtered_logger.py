@@ -6,6 +6,8 @@ import logging
 from typing import List
 import os
 import mysql.connector
+import bcrypt
+from bcrypt import hashpw, gensalt
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -100,6 +102,19 @@ def main() -> None:
         logger.info('Filtered fields: %s', ', '.join(filtered_fields))
     cursor.close()
     connection.close()
+
+
+def hash_password(password: str) -> bytes:
+    """Hash function for password encryption
+        Args:
+            password: str - The password to hash
+        Returns:
+            bytes - The salted, hashed password as a byte string
+    """
+
+    salt = bcrypt.gensalt()
+    encrypt_password = bcrypt.hashpw(password.encode(), salt)
+    return encrypt_password
 
 
 def filter_datum(fields: List[str], redaction: str,
