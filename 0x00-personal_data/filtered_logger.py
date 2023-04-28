@@ -60,8 +60,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         PERSONAL_DATA_DB_HOST = 'localhost',
         PERSONAL_DATA_DB_USERNAME = 'root',
         PERSONAL_DATA_DB_PASSWORD = '',
-        db = 'PERSONAL_DATA_DB_NAME'
-    )
+        db = 'PERSONAL_DATA_DB_NAME
     Return: -> mysql.connector.connection.MySQLConnection
     """
     mydb_connection = mysql.connector.connect(
@@ -70,6 +69,15 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
         database=os.getenv('PERSONAL_DATA_DB_NAME'))
     return mydb_connection
+
+
+def main():
+    """Reading and filtering data
+        Args: None
+    """
+    get_db (
+
+    )
 
 
 def filter_datum(fields: List[str], redaction: str,
