@@ -11,7 +11,7 @@ def hash_password(password: str) -> bytes:
         Returns:
             bytes - The salted, hashed password as a byte string
     """
-
+    password = password.encode()
     salt: bytes = gensalt()
-    encrypt_password: bytes = hashpw(password.encode(), salt)
+    encrypt_password: bytes = hashpw(password, salt)
     return encrypt_password
