@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Encrypting passwords"""
 
-from bcrypt import hashpw, gensalt
-
+import bcrypt
 
 def hash_password(password: str) -> bytes:
     """Hash function for password encryption
@@ -12,6 +11,6 @@ def hash_password(password: str) -> bytes:
             bytes - The salted, hashed password as a byte string
     """
     password = password.encode()
-    salt: bytes = gensalt()
-    encrypt_password: bytes = hashpw(password, salt)
+    salt: bytes = bcrypt.gensalt()
+    encrypt_password: bytes = bcrypt.hashpw(password, salt)
     return encrypt_password
