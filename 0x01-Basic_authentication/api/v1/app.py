@@ -54,7 +54,6 @@ def before_request() -> str:
     """filtering Each request
         that is handled by a function
     """
-    path = request.path
     if auth is None:
         return
         if not auth.require_auth(path, excluded_paths):
