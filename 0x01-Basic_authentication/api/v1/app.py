@@ -18,7 +18,12 @@ auth = getenv("AUTH_TYPE")
 if auth:
     auth = Auth()
 
-excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+excluded_paths = [
+    '/api/v1/status/',
+    '/api/v1/unauthorized/',
+    '/api/v1/forbidden/']
+
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
@@ -39,6 +44,7 @@ def forbidden(error):
     """
     return jsonify({"error": "Forbidden"}), 403
 
+
 @app.before_request
 def before_request():
     """filtering Each request
@@ -54,7 +60,6 @@ def before_request():
     else:
         if path not in excluded_paths:
             return abort(401)
-
 
 
 if __name__ == "__main__":
