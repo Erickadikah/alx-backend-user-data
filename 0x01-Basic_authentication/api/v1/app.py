@@ -50,20 +50,19 @@ def forbidden(error):
 
 
 @app.before_request
-def before_request():
+def before_request() -> str:
     """filtering Each request
         that is handled by a function
     """
     path = request.path
-    if auth:
+    if auth is None:
+        return
         if not auth.require_auth(path, excluded_paths):
-            if auth.authorization_header(request) is None:
-                return abort(401)
-            if auth.current_user(request) is None:
-                return abort(403)
-    else:
-        if path not in excluded_paths:
-            return abort(401)
+            return
+        if auth.authorization_header(request) is None:
+            abort(401)
+        if auth.current_user(request) is None:
+            abort(403)
 
 
 if __name__ == "__main__":
