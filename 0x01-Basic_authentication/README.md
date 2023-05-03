@@ -1,4 +1,24 @@
-# Simple API
+# Basic authentication
+
+
+## Resources
+
+* [REST API Authentication Mechanisms](https://intranet.alxswe.com/rltoken/ssg5umgsMk5jKM8WRHk2Ug)
+* [Base64 in Python](https://intranet.alxswe.com/rltoken/RpaPRyKx1rdHgRSUyuPfeg)
+* [HTTP header Authori](https://intranet.alxswe.com/rltoken/WlARq8tQPUGQq5VphLKM4w)
+
+* [Flask](https://intrane.alxswe.com/rltoken/2Z3X0Q9X0X6QZ3Q4Q3XQjw)
+
+* [HTTP access control (CORS)](https://intranet.alxswe.com/rltoken/2Z3X0Q9X0X6QZ3Q4Q3XQjw)
+
+* [Flask-CORS](https://intranet.alxswe.com/rltoken/2Z3X0Q9X0X6QZ3Q4Q3XQjw)
+
+* [SQLAlchemy](https://intranet.alxswe.com/rltoken/2Z3X0Q9X0X6QZ3Q4Q3XQjw)
+
+
+
+## Simple API
+
 
 Simple HTTP API for playing with `User` model.
 
@@ -40,3 +60,7 @@ $ API_HOST=0.0.0.0 API_PORT=5000 python3 -m api.v1.app
 - `DELETE /api/v1/users/:id`: deletes an user based on the ID
 - `POST /api/v1/users`: creates a new user (JSON parameters: `email`, `password`, `last_name` (optional) and `first_name` (optional))
 - `PUT /api/v1/users/:id`: updates an user based on the ID (JSON parameters: `last_name` and `first_name`)
+
+# AUTHOR
+
+ERICK ADIKAH
