@@ -8,6 +8,8 @@ if os.getenv('AUTH_TYPE') == 'session':
     User = UserSession
 else:
     User = None
+
+    
 class SessionAuth(Auth):
     """Class SessionAuth
     """
