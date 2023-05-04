@@ -23,7 +23,7 @@ if auth == 'auth':
     auth = Auth()
 elif auth == 'basic_auth':
     auth = BasicAuth()
-elif  auth == 'session_auth':
+elif auth == 'session_auth':
     auth = SessionAuth()
 
 excluded_paths = [
