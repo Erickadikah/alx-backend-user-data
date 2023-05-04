@@ -37,7 +37,7 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def un_authorized(error) -> str:
+def unauthorized(error) -> str:
     """unauthorized
     """
     return jsonify({"error": "Unauthorized"}), 401
@@ -54,16 +54,17 @@ def forbidden(error):
 def before_request() -> str:
     """filtering Each request
         that is handled by a function
+        :itarating through the list of excluded paths
+        and return None if the path is in this list
     """
-    if auth is None:
-        return
-    path = request.path
-    if not auth.require_auth(path, excluded_paths):
-        return
-    if auth.authorization_header(request) is None:
-        abort(401)
-    if auth.current_user(request) is None:
-        abort(403)
+    if auth:
+        path = request.path
+        if not auth.require_auth(path, excluded_paths):
+            return
+        if auth.authorization_header(request) is None:
+            abort(401)
+        if auth.current_user(request) is None:
+            abort(403)
 
 
 if __name__ == "__main__":
