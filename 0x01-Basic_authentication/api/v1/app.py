@@ -20,7 +20,7 @@ auth = auth_type
 
 if auth == 'auth':
     auth = Auth()
-elif auth:
+elif auth == 'basic_auth':
     auth = BasicAuth()
 
 excluded_paths = [
@@ -54,17 +54,16 @@ def forbidden(error):
 def before_request() -> str:
     """filtering Each request
         that is handled by a function
-        :itarating through the list of excluded paths
-        and return None if the path is in this list
     """
     if auth:
         path = request.path
-        if not auth.require_auth(path, excluded_paths):
-            return
-        if auth.authorization_header(request) is None:
-            abort(401)
-        if auth.current_user(request) is None:
-            abort(403)
+        # if not auth.require_auth(path, excluded_paths):
+        if auth.require_auth(path, excluded_paths):   
+            # return
+            if auth.authorization_header(request) is None:
+                abort(401)
+            if auth.current_user(request) is None:
+                abort(403)
 
 
 if __name__ == "__main__":
