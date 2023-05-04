@@ -67,9 +67,9 @@ class BasicAuth(Auth):
             Return None if user_pwd is None or not a string
             search of the User to lookup the list of users
         """
-        if not isinstance(user_email, str) or None:
+        if not user_email or not isinstance(user_email, str):
             return None
-        if not isinstance(user_pwd, str) or None:
+        if not user_pwd or not isinstance(user_pwd, str):
             return None
         try:
             user = User.search({'email': user_email})
@@ -85,25 +85,20 @@ class BasicAuth(Auth):
     def current_user(self, request=None) -> TypeVar('User'):
         """Overload current_user"""
         authorization_header = self.authorization_header(request)
-        if not authorization_header:
-            return None
         # Extract base64 authorization_header
-        auth_header = self.extract_base64_authorization_header(
-            authorization_header)
-        if not auth_header:
-            return None
+        # auth_header = self.extract_base64_authorization_header(
+        #     authorization_header)
+
         # decode
-        base_64_auth = self.extract_base64_authorization_header(auth_header)
-        if not base_64_auth:
-            return None
+        base_64_auth = self.extract_base64_authorization_header(
+            authorization_header)
         # Decoding base64 Auth
-        decoded = self.decod_base64_authorization_header(base_64_auth)
-        if not decoded:
-            return None
+        decoded = self.decode_base64_authorization_header(base_64_auth)
         user_credentials = self.extract_user_credentials(decoded)
         user_credentials = list(user_credentials)
         email, password = user_credentials[0], user_credentials[1]
+        print(email, password)
 
         # Getting user object
-        user = self.user_object_from_crededentials(email, password)
+        user = self.user_object_from_credentials(email, password)
         return user
