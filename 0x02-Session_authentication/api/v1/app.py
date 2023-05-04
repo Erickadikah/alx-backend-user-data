@@ -58,7 +58,7 @@ def before_request() -> str:
     if auth:
         path = request.path
         # if not auth.require_auth(path, excluded_paths):
-        if auth.require_auth(path, excluded_paths):   
+        if auth.require_auth(path, excluded_paths):
             # return
             if auth.authorization_header(request) is None:
                 abort(401)
