@@ -16,12 +16,11 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 auth_type = getenv("AUTH_TYPE")
-basic_auth = getenv('AUTH_TYPE')
+auth = auth_type
 
-if auth_type == 'auth':
+if auth == 'auth':
     auth = Auth()
-
-if auth:
+elif auth == 'basic_auth':
     auth = BasicAuth()
 
 excluded_paths = [
@@ -38,7 +37,7 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def un_authorized(error) -> str:
+def unauthorized(error) -> str:
     """unauthorized
     """
     return jsonify({"error": "Unauthorized"}), 401
@@ -56,16 +55,17 @@ def before_request() -> str:
     """filtering Each request
         that is handled by a function
     """
-    if auth is None:
-        return
-        if not auth.require_auth(request.path, excluded_paths):
-            return
-        if auth.authorization_header(request) is None:
-            abort(401)
-        if auth.current_user(request) is None:
-            abort(403)
-        else:
-            request.current_user = auth.current_user(request)
+    if auth:
+        path = request.path
+        # if not auth.require_auth(path, excluded_paths):
+        if auth.require_auth(path, excluded_paths):   
+            # return
+            if auth.authorization_header(request) is None:
+                abort(401)
+            if auth.current_user(request) is None:
+                abort(403)
+            else:
+                request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":

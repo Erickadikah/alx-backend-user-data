@@ -46,7 +46,7 @@ class BasicAuth(Auth):
             return None
 
     def extract_user_credentials(
-            self, decoded_base64_authorization_header: str) -> (str, str):
+            self, decoded_base64_authorization_header: str) -> (str):
         """Basic user Credentials
         """
         if decoded_base64_authorization_header is None:
@@ -67,9 +67,9 @@ class BasicAuth(Auth):
             Return None if user_pwd is None or not a string
             search of the User to lookup the list of users
         """
-        if not isinstance(user_email, str) or None:
+        if not user_email or not isinstance(user_email, str):
             return None
-        if not isinstance(user_pwd, str) or None:
+        if not user_pwd or not isinstance(user_pwd, str):
             return None
         try:
             user = User.search({'email': user_email})
@@ -82,25 +82,23 @@ class BasicAuth(Auth):
             return None
         return user
 
-
     def current_user(self, request=None) -> TypeVar('User'):
         """Overload current_user"""
-        authorization_header = request.headers.get('Authorization')
-        if not authorization_header:
-            return None
+        authorization_header = self.authorization_header(request)
         # Extract base64 authorization_header
-        base64_header = self.extract_base64_authorization_header(authorization_header)
-        if not base64_header:
-            return None
+        # auth_header = self.extract_base64_authorization_header(
+        #     authorization_header)
+
         # decode
-        decoded_header = self.decode_base64_authorization_header(base64_header)
-        if not decoded_header:
-            return None
+        base_64_auth = self.extract_base64_authorization_header(
+            authorization_header)
         # Decoding base64 Auth
-        user_credentials = self.extract_user_credentials(decoded_header)
-        if not user_credentials:
-            return None
+        decoded = self.decode_base64_authorization_header(base_64_auth)
+        user_credentials = self.extract_user_credentials(decoded)
+        user_credentials = list(user_credentials)
         email, password = user_credentials[0], user_credentials[1]
-        user = user_credentials[0], user_credentials[0]
+        print(email, password)
+
         # Getting user object
-        return self.user_object_from_credentials(user)
+        user = self.user_object_from_credentials(email, password)
+        return user
