@@ -43,14 +43,14 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(self.session_cookie(request))
         return User.get(user_id)
 
-    # def destroy_session(self, request=None):
-    #     """This method deletses user sssion/Logout
-    #     """
-    #     if request is None:
-    #         return False
-    #     if 'session_id' not in self.session.cookies(request):
-    #         return False
-    #     if 'session_id' not in self.user_id_by_session_id(request):
-    #         return False
-    #     else:
-    #         del(self.user_id_by_session_id[request.cookies.get('session_id')])
+    def destroy_session(self, request=None):
+        """This method deletses user sssion/Logout
+        """
+        if request is None:
+            return False
+        if 'session_id' not in self.session.cookies(request):
+            return False
+        if 'session_id' not in self.user_id_by_session_id(request):
+            return False
+        else:
+            del(self.user_id_by_session_id[request.cookies.get('session_id')])
