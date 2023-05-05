@@ -29,7 +29,9 @@ elif auth == 'session_auth':
 excluded_paths = [
     '/api/v1/status/',
     '/api/v1/unauthorized/',
-    '/api/v1/forbidden/']
+    '/api/v1/forbidden/',
+    '/api/v1/auth_session/login/'
+    ]
 
 
 @app.errorhandler(404)
@@ -69,6 +71,9 @@ def before_request() -> str:
                 abort(403)
             else:
                 request.current_user = auth.current_user(request)
+            if auth.authorization_header(request) is None or \
+                    auth.session_cookie(request) is None:
+                abort(401)
 
 
 if __name__ == "__main__":
