@@ -32,7 +32,7 @@ def login() -> str:
     # creating New session id for the user
     session_id = auth.create_session(user_id)
     # return the obj to json string
-    user_json = user.obj.to_json()
+    user_json = user_obj.to_json()
     # setting cookie to the response
     response = make_response(user_json)
     session_cookie = getenv('SESSION_NAME')
