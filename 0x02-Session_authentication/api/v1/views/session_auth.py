@@ -1,5 +1,5 @@
-#!/usr/bin/python3
-"""
+#!/usr/bin/env python3
+"""view for Session Authentication
 """
 from os import getenv
 from flask import Flask, jsonify, make_response
