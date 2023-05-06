@@ -42,7 +42,7 @@ def login() -> str:
     return response
 
 
-@app_views.route('/auth_session/logout',
+@app_views.route('/api/v1/auth_session/logout',
                  methods=['DELETE'],
                  strict_slashes=False)
 def logout() -> str:
@@ -52,4 +52,9 @@ def logout() -> str:
     from api.v1.app import auth
 
     # destroy session logging out user
-    return (jsonify({}), 200) if auth.destroy_session(request) else abort(404)
+    # return if auth.destroy_session(request)\
+    #     else abort(404)
+    if auth.destroy_session(request):
+        return jsonify({}), 200
+    else:
+        abort(404)
