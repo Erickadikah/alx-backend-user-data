@@ -55,9 +55,7 @@ class Auth:
         # user = User(email=email, hashed_password=hashed_password)
         # self._session.add(user)
         # self._session.commit()
-
             return new_user
-        return None
 
     def valid_login(self, email: str, password: str) -> bool:
         """Valid login
