@@ -30,5 +30,18 @@ def user():
     except Exception:
         return jsonify({"message": "email already registered"}), 400
 
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
+def login():
+    """Login Route
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
+    try:
+        if not user:
+            return Flask.abort, 401
+    except Exception:
+        return
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000", debug=True)
