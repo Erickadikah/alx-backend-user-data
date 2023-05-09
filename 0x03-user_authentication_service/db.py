@@ -33,7 +33,7 @@ class DB:
         return self.__session
 
 
-    def add_user(self, email: str, hashed_password: str) -> str:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Creating add_user method
             Args: user_email, user_password
             return: User_id
