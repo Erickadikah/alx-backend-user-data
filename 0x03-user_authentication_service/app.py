@@ -12,13 +12,13 @@ def test_app():
     """Flask app
         Return: ({"message": "Bienvenue"})
     """
-    return jsonify ({"message": "Bienvenue"})
+    return jsonify({"message": "Bienvenue"})
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
 def user():
     """Register user route
-    
+
         getting email and passwod from the request body
         required fields: email, password
     """
@@ -29,6 +29,7 @@ def user():
         return jsonify({"email": email, "message": "user created"}), 200
     except Exception:
         return jsonify({"message": "email already registered"}), 400
+
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():

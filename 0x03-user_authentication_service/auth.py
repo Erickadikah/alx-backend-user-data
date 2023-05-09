@@ -24,8 +24,6 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-
-
     def _hash_password(self, password: str) -> str:
         """Returns encrypted password
             Args: password
@@ -34,7 +32,6 @@ class Auth:
         encoded_password = password.encode('utf-8')
         hashed_password = bcrypt.hashpw(encoded_password, salt)
         return hashed_password.decode('utf-8')
-
 
     def register_user(self, email: str, password: str) -> Optional[User]:
         """Create a new User by given Email and password
@@ -59,7 +56,6 @@ class Auth:
 
             return new_user
 
-
     def valid_login(self, email: str, password: str) -> bool:
         """Valid login
         Args: email, Password
@@ -68,13 +64,14 @@ class Auth:
             # finds user by email
             user = self._db.find_user_by(email=email)
             if user:
-                #checks if its a valid bcript password
-                return bcrypt.checkpw(password.encode('utf-8'), user.hashed_password.encode('utf-8'))
+                # checks if its a valid bcript password
+                return bcrypt.checkpw(
+                    password.encode('utf-8'),
+                    user.hashed_password.encode('utf-8'))
             else:
                 return False
         except NoResultFound:
             return False
-
 
     def create_session(self, email: str) -> str:
         """creating asession and creating uuid for each

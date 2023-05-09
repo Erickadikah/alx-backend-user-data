@@ -6,8 +6,9 @@ from sqlalchemy import Column, String, Integer
 
 Base = declarative_base()
 
+
 class User(Base):
-    __tablename__= 'users'
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
