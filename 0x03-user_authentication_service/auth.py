@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """"Password hashing
 """
+from bcrypt import hashpw, gensalt
 import bcrypt
 import base64
 from db import DB, User
@@ -17,21 +18,22 @@ def _generate_uuid() -> str:
     return str(uuid4())
 
 
+def _hash_password(password: str) -> bytes:
+    """Returns encrypted password
+        Args: password
+    """
+    # salt = bcrypt.gensalt()
+    # encoded_password = password.encode('utf-8')
+    # hashed_password = bcrypt.hashpw(encoded_password, salt)
+    return hashpw(password.encode('utf-8'), gensalt())
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
 
     def __init__(self):
         self._db = DB()
-
-    def _hash_password(self, password: str) -> str:
-        """Returns encrypted password
-            Args: password
-        """
-        salt = bcrypt.gensalt()
-        encoded_password = password.encode('utf-8')
-        hashed_password = bcrypt.hashpw(encoded_password, salt)
-        return hashed_password.decode('utf-8')
 
     def register_user(self, email: str, password: str) -> Optional[User]:
         """Create a new User by given Email and password
