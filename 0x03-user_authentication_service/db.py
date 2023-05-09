@@ -63,7 +63,7 @@ class DB:
             raise NoResultFound
         return user
 
-    def update_user(self, user_id: int, **kwargs) -> User:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """Updating User by id
             raises ValueError:
             to atleast one Field must be provided for update
