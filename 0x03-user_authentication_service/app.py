@@ -16,7 +16,7 @@ def test_app():
 
 
 @app.route('/users', methods=['POST'], strict_slashes=False)
-def user():
+def user() -> str:
     """Register user route
 
         getting email and passwod from the request body
@@ -25,8 +25,9 @@ def user():
     email = request.form.get('email')
     password = request.form.get('password')
     try:
-        new_user = auth.register_user(email, password)
-        return jsonify({"email": email, "message": "user created"}), 200
+        new_user = AUTH.register_user(email, password)
+        if new_user is not None:
+            return jsonify({"email": email, "message": "user created"}), 200
     except Exception:
         return jsonify({"message": "email already registered"}), 400
 
