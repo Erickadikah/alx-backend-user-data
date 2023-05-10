@@ -78,10 +78,10 @@ class Auth:
         if user_id is None:
             return None
         try:
-            user = self._db.find_user_by(id=user_id)
+            user = self._db.find_user_by(user_id=user_id)
             self._db.update_user(user.id, session=None)
             # return user
-        except Exception:
+        except NoResultFound:
             return None
 
     def register_user(self, email: str, password: str) -> User:
