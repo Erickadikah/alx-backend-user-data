@@ -72,8 +72,8 @@ class Auth:
             return bcrypt.checkpw(
                 password.encode('utf-8'),
                 user.hashed_password)
-        # else:
-        # return False
+        else:
+            return False
 
     def create_session(self, email: str) -> str:
         """creating asession and creating uuid for each
