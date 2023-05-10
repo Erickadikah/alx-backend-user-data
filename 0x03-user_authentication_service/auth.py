@@ -46,12 +46,9 @@ class Auth:
         except NoResultFound:
             return False
             # checks if its a valid bcript password
-        if user:
-            return bcrypt.checkpw(
+        return bcrypt.checkpw(
                 password.encode('utf-8'),
                 user.hashed_password)
-        else:
-            return False
 
     def __init__(self):
         self._db = DB()
