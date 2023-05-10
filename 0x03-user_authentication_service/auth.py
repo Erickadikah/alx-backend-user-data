@@ -17,15 +17,6 @@ def _generate_uuid() -> str:
     """
     return str(uuid4())
 
-@staticmethod
-def _hash_password(self, password: str) -> bytes:
-    """Returns encrypted password
-        Args: password
-    """
-    # salt = bcrypt.gensalt()
-    # encoded_password = password.encode('utf-8')
-    # hashed_password = bcrypt.hashpw(encoded_password, salt)
-    return hashpw(password.encode('utf-8'), gensalt())
 
 
 class Auth:
@@ -34,6 +25,17 @@ class Auth:
 
     def __init__(self):
         self._db = DB()
+
+
+    @staticmethod
+    def _hash_password(self, password: str) -> bytes:
+        """Returns encrypted password
+        Args: password
+        """
+        # salt = bcrypt.gensalt()
+        # encoded_password = password.encode('utf-8')
+        # hashed_password = bcrypt.hashpw(encoded_password, salt)
+        return hashpw(password.encode('utf-8'), gensalt())
 
     def register_user(self, email: str, password: str) -> User:
         """Create a new User by given Email and password
@@ -48,7 +50,8 @@ class Auth:
                 raise ValueError('User {} already exists'.format(email))
         except NoResultFound:
             # hashed the password
-            hashed_password = _hash_password(password)
+
+            hashed_password = Auth._hash_password(self, password)
             new_user = self._db.add_user(email, hashed_password)
 
         # creating a new user and adding to the database.
