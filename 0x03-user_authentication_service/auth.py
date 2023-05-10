@@ -75,7 +75,7 @@ class Auth:
             then we udate the user using user.id,
             session to none
         """
-        if not user_id:
+        if user_id is None:
             return None
         try:
             user = self._db.find_user_by(user_id=user_id)
