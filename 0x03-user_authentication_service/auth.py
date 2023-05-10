@@ -17,23 +17,44 @@ def _generate_uuid() -> str:
     """
     return str(uuid4())
 
+# @staticmethod
+
+
+def _hash_password(self, password: str) -> bytes:
+    """Returns encrypted password
+    Args: password
+    """
+    # salt = bcrypt.gensalt()
+    # encoded_password = password.encode('utf-8')
+    # hashed_password = bcrypt.hashpw(encoded_password, salt)
+    return hashpw(password.encode('utf-8'), gensalt())
+
 
 class Auth:
     """Auth class to interact with the authentication database.
     """
+    _db = DB()
+
+    @staticmethod
+    def valid_login(email: str, password: str) -> bool:
+        """Valid login
+        Args: email, Password
+        """
+        try:
+            # finds user by email
+            user = Auth._db.find_user_by(email=email)
+        except NoResultFound:
+            return False
+            # checks if its a valid bcript password
+        if user:
+            return bcrypt.checkpw(
+                password.encode('utf-8'),
+                user.hashed_password)
+        else:
+            return False
 
     def __init__(self):
         self._db = DB()
-
-    @staticmethod
-    def _hash_password(self, password: str) -> bytes:
-        """Returns encrypted password
-        Args: password
-        """
-        # salt = bcrypt.gensalt()
-        # encoded_password = password.encode('utf-8')
-        # hashed_password = bcrypt.hashpw(encoded_password, salt)
-        return hashpw(password.encode('utf-8'), gensalt())
 
     def register_user(self, email: str, password: str) -> User:
         """Create a new User by given Email and password
@@ -49,31 +70,14 @@ class Auth:
         except NoResultFound:
             # hashed the password
 
-            hashed_password = Auth._hash_password(self, password)
+            hashed_password = _hash_password(self, password)
             new_user = self._db.add_user(email, hashed_password)
+            return new_user
 
         # creating a new user and adding to the database.
         # user = User(email=email, hashed_password=hashed_password)
         # self._session.add(user)
         # self._session.commit()
-            return new_user
-
-    def valid_login(self, email: str, password: str) -> bool:
-        """Valid login
-        Args: email, Password
-        """
-        try:
-            # finds user by email
-            user = self._db.find_user_by(email=email)
-        except NoResultFound:
-            return False
-            # checks if its a valid bcript password
-        if user:
-            return bcrypt.checkpw(
-                password.encode('utf-8'),
-                user.hashed_password)
-        else:
-            return False
 
     def create_session(self, email: str) -> str:
         """creating asession and creating uuid for each
