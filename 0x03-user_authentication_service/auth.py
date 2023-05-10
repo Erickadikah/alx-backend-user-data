@@ -68,7 +68,7 @@ class Auth:
         except Exception:
             return None
 
-    def destroy_session(self, user_id: str) -> None:
+    def destroy_session(self, user_id: int) -> None:
         """Destroy session
             Args: user_id
             find the user by user_id:
