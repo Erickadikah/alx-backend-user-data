@@ -17,8 +17,8 @@ def _generate_uuid() -> str:
     """
     return str(uuid4())
 
-
-def _hash_password(password: str) -> bytes:
+@staticmethod
+def _hash_password(self, password: str) -> bytes:
     """Returns encrypted password
         Args: password
     """
@@ -64,15 +64,14 @@ class Auth:
         try:
             # finds user by email
             user = self._db.find_user_by(email=email)
-            if user:
-                # checks if its a valid bcript password
-                return bcrypt.checkpw(
-                    password.encode('utf-8'),
-                    user.hashed_password.encode('utf-8'))
-            else:
-                return False
         except NoResultFound:
             return False
+                # checks if its a valid bcript password
+        return bcrypt.checkpw(
+                password.encode('utf-8'),
+                user.hashed_password)
+            # else:
+                # return False
 
     def create_session(self, email: str) -> str:
         """creating asession and creating uuid for each
