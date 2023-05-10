@@ -5,7 +5,7 @@ from bcrypt import hashpw, gensalt
 import bcrypt
 import base64
 from db import DB, User
-from typing import Optional
+from typing import Union
 from sqlalchemy.orm.exc import NoResultFound
 from user import User
 from uuid import uuid4
@@ -47,8 +47,17 @@ class Auth:
             return False
             # checks if its a valid bcript password
         return bcrypt.checkpw(
-                password.encode('utf-8'),
-                user.hashed_password)
+            password.encode('utf-8'),
+            user.hashed_password)
+
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """Getting user by session_id
+            Args: session_id
+        """
+        user = self._db.find_user_by(session_id=session_id)
+        if not session_id or not user:
+            return None
+        return user
 
     def __init__(self):
         self._db = DB()
