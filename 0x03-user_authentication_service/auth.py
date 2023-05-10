@@ -18,14 +18,12 @@ def _generate_uuid() -> str:
     return str(uuid4())
 
 
-
 class Auth:
     """Auth class to interact with the authentication database.
     """
 
     def __init__(self):
         self._db = DB()
-
 
     @staticmethod
     def _hash_password(self, password: str) -> bytes:
@@ -69,12 +67,13 @@ class Auth:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
             return False
-                # checks if its a valid bcript password
-        return bcrypt.checkpw(
+            # checks if its a valid bcript password
+        if user:
+            return bcrypt.checkpw(
                 password.encode('utf-8'),
                 user.hashed_password)
-            # else:
-                # return False
+        # else:
+        # return False
 
     def create_session(self, email: str) -> str:
         """creating asession and creating uuid for each
