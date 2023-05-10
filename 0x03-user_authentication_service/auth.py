@@ -75,10 +75,10 @@ class Auth:
             then we udate the user using user.id,
             session to none
         """
-        if user_id is None:
+        if not user_id:
             return None
         try:
-            user = self._db.find_user_by(user_id=user_id)
+            user = self._db.find_user_by(id=user_id)
             self._db.update_user(user.id, session=None)
             # return user
         except NoResultFound:
