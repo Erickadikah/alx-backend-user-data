@@ -50,14 +50,23 @@ class Auth:
             password.encode('utf-8'),
             user.hashed_password)
 
-    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+    def get_user_from_session_id(self, session_id: str) -> Union[str, None]:
         """Getting user by session_id
             Args: session_id
-        """
-        user = self._db.find_user_by(session_id=session_id)
-        if not session_id or not user:
+            if there is no session_id :
             return None
-        return user
+            we find the user with session_id :
+            return user
+            else:
+                return None
+        """
+        if not session_id:
+            return None
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+            return user
+        except Exception:
+            return None
 
     def __init__(self):
         self._db = DB()
