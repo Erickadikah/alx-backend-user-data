@@ -75,14 +75,14 @@ class Auth:
             then we udate the user using user.id,
             session to none
         """
-        if user_id:
-            try:
-                user = self._db.find_user_by(id=user_id)
-                self._db.update_user(user.id, session_id=None)
-                self._db.__session.commit()
+        if user_id is None:
+            return None
+        try:
+            user = self._db.find_user_by(id=user_id)
+            self._db.update_user(user.id, session_id=None)
                 # return user
-            except NoResultFound:
-                return None
+        except NoResultFound:
+            return None
 
     def register_user(self, email: str, password: str) -> User:
         """Create a new User by given Email and password
