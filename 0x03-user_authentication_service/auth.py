@@ -68,6 +68,24 @@ class Auth:
         except Exception:
             return None
 
+    def get_reset_password_token(self, email: str) -> str:
+        """function to reset password
+            Args: email: str
+            find the user by email:
+            if user exists:
+                reset_token = _generate_uuid()
+                update the user with reset_token
+                return reset_token
+        """
+        try:
+            user = Auth._db.find_user_by(email=email)
+            if user:
+                reset_token = _generate_uuid()
+                self._db.update_user(user.id, reset_token=reset_token)
+                return reset_token
+        except Exception:
+            raise ValueError
+
     def destroy_session(self, user_id: int) -> None:
         """Destroy session
             Args: user_id
