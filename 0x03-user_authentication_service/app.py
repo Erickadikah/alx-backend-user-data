@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """flask_app
 """
+from urllib import response
 from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 AUTH = Auth()
@@ -45,13 +46,12 @@ def login() -> str:
     # if not valid_login:
     #     abort(400)
     if not AUTH.valid_login(email, password):
-       abort(401)
+        abort(401)
     session_id = AUTH.create_session(email)
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie('session_id', session_id)
     return response
 
-    
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
@@ -73,6 +73,7 @@ def logout() -> str:
         abort(403)
     else:
         AUTH.destroy_session(user.id)
+        response.set_cookie('session_id', None)
     return redirect('/')
 
 
