@@ -80,9 +80,10 @@ def logout() -> str:
 def profile() -> str:
     """Get profile route
     """
-    user = AUTH.get_user_from_session_id(request.cookies.get('session_id'))
+    session_id = AUTH.get_user_from_session_id('session_id')
+    user = request.cookies.get(session_id)
     if user is None:
-        abort(401)
+        abort(403)
     return jsonify({"email": user.email}), 200
 
 
