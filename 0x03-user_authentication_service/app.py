@@ -81,8 +81,9 @@ def profile() -> str:
     """Get profile route
     """
     user = AUTH.get_user_from_session_id(request.cookies.get('session_id'))
-    if user:
-        return jsonify({"email": user.email}), 200
+    if user is None:
+        abort(401)
+    return jsonify({"email": user.email}), 200
 
 
 if __name__ == "__main__":
