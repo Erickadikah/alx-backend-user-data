@@ -77,8 +77,8 @@ class Auth:
         """
         if user_id:
             try:
-                user = self._db.find_user_by(id=user_id)
-                self._db.update_user(user.id, session=None)
+                user = Auth._db.find_user_by(id=user_id)
+                Auth._db.update_user(user.id, session=None)
                 # return user
             except NoResultFound:
                 return None
