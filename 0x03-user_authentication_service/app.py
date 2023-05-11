@@ -51,7 +51,7 @@ def login() -> str:
     response.set_cookie('session_id', session_id)
     return response
 
-@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+@app.route('/sessions', methods=['GET'], strict_slashes=False)
 def logout():
     """Logout route
         destroy_session: user_id
