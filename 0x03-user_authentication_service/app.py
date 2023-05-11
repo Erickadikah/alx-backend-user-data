@@ -65,11 +65,11 @@ def logout():
             AUTH.destroy_session(user.id)
             return redirect(url_for('home'))
     """
-    session_id = request.cookies.get('session_id')
-    if session_id is None:
+    session_id: str = request.cookies.get('session_id')
+    if not session_id:
         abort(403)
     user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
+    if not user:
         abort(403)
     AUTH.destroy_session(user.id)
     return redirect(url_for('index'))
