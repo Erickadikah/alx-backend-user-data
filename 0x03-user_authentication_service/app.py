@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """flask_app
 """
+
 from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 AUTH = Auth()
@@ -45,13 +46,12 @@ def login() -> str:
     # if not valid_login:
     #     abort(400)
     if not AUTH.valid_login(email, password):
-       abort(401)
+        abort(401)
     session_id = AUTH.create_session(email)
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie('session_id', session_id)
     return response
 
-    
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout() -> str:
@@ -67,13 +67,22 @@ def logout() -> str:
             AUTH.destroy_session(user.id)
             return redirect(url_for('home'))
     """
-    session_id = request.cookies.get('session_id')
+    session_id = request.form.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
+    if not user or not session_id:
         abort(403)
     else:
         AUTH.destroy_session(user.id)
     return redirect('/')
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """Get profile route
+    """
+    user = AUTH.get_user_from_session_id(request.cookies.get('session_id'))
+    if user:
+        return jsonify({"email": user.email}), 200
 
 
 if __name__ == "__main__":
