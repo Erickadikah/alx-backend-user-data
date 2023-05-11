@@ -54,7 +54,7 @@ def login() -> str:
     
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-def logout():
+def logout() -> str:
     """Logout route
         destroy_session: user_id
         Response to : DELETE/sessions
@@ -67,7 +67,7 @@ def logout():
             AUTH.destroy_session(user.id)
             return redirect(url_for('home'))
     """
-    session_id: str = request.cookies.get('session_id', None)
+    session_id = request.cookies.get('session_id', None)
     user = AUTH.get_user_from_session_id(session_id)
     if not user or not session_id:
         abort(403)
