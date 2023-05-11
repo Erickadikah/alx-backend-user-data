@@ -56,7 +56,6 @@ def logout():
     """Logout route
         destroy_session: user_id
         Response to : DELETE/sessions
-    """
     cookies = request.cookies.get('session_id', None)
     user = AUTH.get_user_from_session_id(cookies)
     if user is None or cookies is None:
@@ -65,6 +64,15 @@ def logout():
         if user:
             AUTH.destroy_session(user.id)
             return redirect(url_for('home'))
+    """
+    session_id = request.cookies.get('session_id')
+    if session_id is None:
+        abort(403)
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
+        abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
