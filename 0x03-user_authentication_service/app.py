@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """flask_app
 """
-from flask import Flask, jsonify, request, abort, redirect
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 AUTH = Auth()
 app = Flask(__name__)
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
-def test_app():
+def home():
     """Flask app
         Return: ({"message": "Bienvenue"})
     """
@@ -55,14 +55,14 @@ def login() -> str:
 def logout():
     """Logout route
         destroy_session: user_id
-        Response to : DELETE /sessions
+        Response to : DELETE/sessions
     """
-    cookies = request.cookies.get('session_id')
+    cookies = request.cookies.get('session_id', None)
     user = AUTH.get_user_from_session_id(cookies)
     if user is None or cookies is None:
         abort(403)
     AUTH.destroy_session(user.id)
-    return redirect('/')
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
