@@ -68,7 +68,7 @@ class Auth:
         except Exception:
             return None
 
-    def destroy_session(user_id: int) -> None:
+    def destroy_session(self, user_id: int) -> None:
         """Destroy session
             Args: user_id
             find the user by user_id:
@@ -78,7 +78,7 @@ class Auth:
         if user_id:
             try:
                 user = Auth._db.find_user_by(id=user_id)
-                Auth._db.update_user(user.id, session=None)
+                self._db.update_user(user.id, session=None)
                 # return user
             except NoResultFound:
                 return None
