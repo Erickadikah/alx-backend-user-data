@@ -86,6 +86,24 @@ class Auth:
         except Exception:
             raise ValueError
 
+    def update_password(self, reset_token: str, password: str) -> None:
+        """Update password
+            Args: reset_token, password
+            find the user by reset_token:
+            if user exists:
+                hashed_password = _hash_password(password)
+                update the user with hashed_password
+                return None
+        """
+        try:
+            user = Auth._db.find_user_by(reset_token=reset_token)
+            if user:
+                hashed_password = _hash_password(password)
+                self._db.update_user(user.id, hashed_password=hashed_password)
+                return None
+        except Exception:
+            raise ValueError
+
     def destroy_session(self, user_id: int) -> None:
         """Destroy session
             Args: user_id
