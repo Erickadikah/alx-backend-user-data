@@ -97,12 +97,14 @@ class Auth:
         """
         try:
             user = Auth._db.find_user_by(reset_token=reset_token)
-            if user:
-                hashed_password = _hash_password(password)
-                self._db.update_user(user.id, hashed_password=hashed_password)
-                return None
         except Exception:
-            raise ValueError
+            user = None
+            if not user:
+                raise ValueError
+            new_hashed_password = _hash_password(password)
+            self._db.update_user(user.id, hashed_password=new_hashed_password,
+                                 reset_token=None)
+            return None
 
     def destroy_session(self, user_id: int) -> None:
         """Destroy session
